@@ -31,8 +31,8 @@ namespace AcmeSistemaServidor.Repositorio
 
         public async Task<ResultadoPaginado<Tratamento>> PegarTratamentosAsync(bool status, int idPaciente, DateTime dataInicial, DateTime dataFinal, int pagina, int quantidadePorPagina)
         {
-            dataInicial = dataInicial.Date;         //00:00
-            dataFinal = dataFinal.Date.AddDays(1);
+            dataInicial = DateTime.SpecifyKind(dataInicial, DateTimeKind.Utc);         //00:00
+            dataFinal = DateTime.SpecifyKind(dataFinal, DateTimeKind.Utc).AddDays(1).AddTicks(-1);
 
             var query = _contexto.Tratamentos.Where(t => t.Ativo == status)
                                              .Where(t => t.IdPaciente == idPaciente) 
