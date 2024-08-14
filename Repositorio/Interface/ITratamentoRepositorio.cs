@@ -5,7 +5,7 @@ namespace AcmeSistemaServidor.Repositorio.Interface
 {
     public interface ITratamentoRepositorio
     {
-        public Task<ResultadoPaginado<Tratamento>> PegarTratamentosAsync(bool status, int pagina, int quantidadePorPagina);
+        public Task<ResultadoPaginado<Tratamento>> PegarTratamentosAsync(bool status, int idPaciente, DateTime dataInicial, DateTime dataFinal, int pagina, int quantidadePorPagina);
 
         public Task AdicionarTratamentoAsync(Tratamento tratamento);
 
