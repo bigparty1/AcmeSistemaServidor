@@ -25,7 +25,7 @@ namespace AcmeSistemaServidor.Data.Contexto
 
             //datetime with timezone (postgreSQL)
             modelBuilder.Entity<Tratamento>()
-                .Property(t => t.Date)
+                .Property(t => t.Data)
                 .HasColumnType("timestamp with time zone");
         }
     }

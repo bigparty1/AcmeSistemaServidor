@@ -34,10 +34,10 @@ namespace AcmeSistemaServidor.Repositorio
             dataInicial = dataInicial.Date;         //00:00
             dataFinal = dataFinal.Date.AddDays(1);
 
-            var query = _contexto.Tratamentos.Where(t => t.Status == status)
+            var query = _contexto.Tratamentos.Where(t => t.Ativo == status)
                                              .Where(t => t.IdPaciente == idPaciente) 
-                                             .Where(t => t.Date >= dataInicial && t.Date < dataFinal)
-                                             .OrderByDescending(t => t.Date);
+                                             .Where(t => t.Data >= dataInicial && t.Data < dataFinal)
+                                             .OrderByDescending(t => t.Data);
 
             return new ResultadoPaginado<Tratamento>
             {

@@ -13,13 +13,13 @@ namespace AcmeSistemaServidor.Data.Models.Entities
         public int IdPaciente { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Data { get; set; }
 
         [Required]
         public string Descricao { get; set; }
 
         [Required]
-        public bool Status { get; set; }
+        public bool Ativo { get; set; }
 
         public Paciente? Paciente { get; set; }
     }
