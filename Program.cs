@@ -1,5 +1,7 @@
 
 using AcmeSistemaServidor.Data.Contexto;
+using AcmeSistemaServidor.Repositorio;
+using AcmeSistemaServidor.Repositorio.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcmeSistemaServidor
@@ -14,6 +16,9 @@ namespace AcmeSistemaServidor
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddScoped<IPacienteRepositorio, PacienteRepositorio>();
+            builder.Services.AddScoped<ITratamentoRepositorio, TratamentoRepositorio>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
