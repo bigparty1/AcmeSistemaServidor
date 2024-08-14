@@ -19,12 +19,14 @@ namespace AcmeSistemaServidor.Repositorio
         {
             var paciente = await _contexto.Pacientes.FindAsync(tratamento.IdPaciente);
             tratamento.Paciente = paciente;
+            tratamento.Data = tratamento.Data.ToUniversalTime();
             await _contexto.Tratamentos.AddAsync(tratamento);
             await _contexto.SaveChangesAsync();
         }
 
         public async Task AtualizarTratamentoAsync(Tratamento tratamento)
         {
+            tratamento.Data = tratamento.Data.ToUniversalTime();
             _contexto.Tratamentos.Update(tratamento);
             await _contexto.SaveChangesAsync();
         }
