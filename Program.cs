@@ -20,6 +20,16 @@ namespace AcmeSistemaServidor
             builder.Services.AddScoped<IPacienteRepositorio, PacienteRepositorio>();
             builder.Services.AddScoped<ITratamentoRepositorio, TratamentoRepositorio>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -31,10 +41,11 @@ namespace AcmeSistemaServidor
                 app.UseSwaggerUI();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
