@@ -3,6 +3,7 @@ using AcmeSistemaServidor.Data.Models;
 using AcmeSistemaServidor.Data.Models.Entities;
 using AcmeSistemaServidor.Repositorio.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace AcmeSistemaServidor.Repositorio
 {
@@ -49,9 +50,21 @@ namespace AcmeSistemaServidor.Repositorio
 
         public async Task<ResultadoPaginado<Paciente>> PegarPacientesAsync(bool status, string nomePrefixo, int pagina, int quantidadePorPagina)
         {
-            var query = _contexto.Pacientes.Where(p => EF.Functions.ILike(p.Nome, $"{nomePrefixo}%"))
-                                           .Where(p => p.Ativo == status)
-                                           .OrderBy(p => p.Nome);
+            var query = _contexto.Pacientes.Where(p => p.Ativo == status);
+
+            if (PadraoCPF(nomePrefixo))
+            {
+                string cpf = ApenasNumeros(nomePrefixo);
+                query = _contexto.Pacientes.FromSqlRaw(
+                    "SELECT * FROM \"Pacientes\" WHERE \"Ativo\" = {0} AND REPLACE(REPLACE(REPLACE(\"CPF\", '.', ''), '-', ''), '/', '') LIKE {1}",
+                    status, $"{cpf}%");
+            }
+            else
+            {
+                query = query.Where(p => EF.Functions.ILike(p.Nome, $"{nomePrefixo}%"));
+            }
+
+            query = query.OrderBy(p => p.Nome);
 
             return new ResultadoPaginado<Paciente>
             {
@@ -62,6 +75,16 @@ namespace AcmeSistemaServidor.Repositorio
                 PaginaAtual = pagina,
                 TotalPorPaginas = quantidadePorPagina
             };
+        }
+
+        private static string ApenasNumeros(string str)
+        {
+            return Regex.Replace(str, "[^0-9]", "");
+        }
+
+        private static bool PadraoCPF(string str)
+        {
+            return Regex.IsMatch(str, @"^[0-9\.\-]+$");
         }
     }
 }
